@@ -34,7 +34,7 @@ const Posts = ({ feedType, username, userId }) => {
 				const data = await res.json();
 
 				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
+					throw new Error(data.message || "Something went wrong");
 				}
 
 				return data;
@@ -62,7 +62,8 @@ const Posts = ({ feedType, username, userId }) => {
 			)}
 			{!isLoading && !isRefetching && posts && (
 				<div>
-					{posts.map((post) => (
+					
+					{posts.posts.map((post) => (
 						<Post key={post._id} post={post} />
 					))}
 				</div>
