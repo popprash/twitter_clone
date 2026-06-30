@@ -21,7 +21,6 @@ export const getUserProfile = async (req, res) => {
 
 export const followUnfollowUser = async (req, res) => {
   try {
-    console.log("entered controller");
     const { id } = req.params;
     const targetUser = await User.findById(id);
     const loggedInUser = await User.findById(req.user._id);
@@ -59,7 +58,7 @@ export const followUnfollowUser = async (req, res) => {
       return res.status(200).json({ message: "user followed successfully" });
     }
   } catch (error) {
-    console.log(`Error in the followUnfollow controller : ${error.message}`);
+    console.error(`Error in the followUnfollow controller : ${error.message}`);
     return res.status(500).json({ message: "internal server error" });
   }
 };
@@ -94,7 +93,7 @@ export const getSuggestedUsers = async (req, res) => {
 
     return res.status(200).json(suggestedUsers);
   } catch (error) {
-    console.log(`Error in the suggestedUser controller: ${error.message}`);
+    console.error(`Error in the suggestedUser controller: ${error.message}`);
     return res.status(500).json("internal server error");
   }
 };
@@ -196,7 +195,7 @@ export const updateUserProfile = async (req, res) => {
 
     return res.status(200).json(user);
   } catch (error) {
-    console.log(`Error in updateUserProfile controller: ${error.message}`);
+    console.error (`Error in updateUserProfile controller: ${error.message}`);
 
     return res.status(500).json({
       message: "internal server error",

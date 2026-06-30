@@ -35,11 +35,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/posts', postRoutes)
 app.use('/api/notification', notificationRoutes)
 
-console.log(process.env.CLOUDINARY_CLOUD_NAME);
-console.log(process.env.CLOUDINARY_API_KEY);
-console.log(process.env.CLOUDINARY_API_SECRET);
 
-console.log(cloudinary.config())
 const PORT = process.env.PORT || 8000
 
 app.listen(PORT, (req, res)=>{
