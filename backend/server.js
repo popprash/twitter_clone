@@ -1,3 +1,5 @@
+import path from 'path'
+
 import express from 'express'
 import dotenv from 'dotenv'
 
@@ -37,7 +39,17 @@ app.use('/api/notification', notificationRoutes)
 
 
 const PORT = process.env.PORT || 8000
+const __dirname = path.resolve()
 
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "frontend", "dist")));
+
+	app.use((req, res) => {
+		res.sendFile(
+			path.resolve(__dirname, "frontend", "dist", "index.html")
+		);
+	});
+}
 app.listen(PORT, (req, res)=>{
     console.log(`Server is up and runnig on port ${PORT}`)
 })
