@@ -31,7 +31,7 @@ const Post = ({ post }) => {
 				const data = await res.json();
 
 				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
+					throw new Error(data.message || "Something went wrong");
 				}
 				return data;
 			} catch (error) {
@@ -51,8 +51,9 @@ const Post = ({ post }) => {
 					method: "POST",
 				});
 				const data = await res.json();
+				console.log("data", data);
 				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
+					throw new Error(data.message || "Something went wrong");
 				}
 				return data;
 			} catch (error) {
@@ -65,7 +66,8 @@ const Post = ({ post }) => {
 
 			// instead, update the cache directly for that post
 			queryClient.setQueryData(["posts"], (oldData) => {
-				return oldData.map((p) => {
+				console.log("oldData", oldData);
+				return oldData.posts.map((p) => {
 					if (p._id === post._id) {
 						return { ...p, likes: updatedLikes };
 					}

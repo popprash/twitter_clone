@@ -33,6 +33,7 @@ export const createPost = async (req , res)=>{
         return res.status(201).json({message: "post uploaded successfully", newPost})
         
     } catch (error) {
+        console.log(`Error in the createPost controller : ${error.message}`)
         console.log(`Error in the creatPost controller : ${error.message}`)
         return res.status(500).json({error: "internal server error"})
     }
