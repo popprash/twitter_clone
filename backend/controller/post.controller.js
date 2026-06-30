@@ -59,7 +59,7 @@ export const deletePost = async (req, res) =>{
         return res.status(200).json({message: "successfully deleted the post!"})
         
     } catch (error) {
-        console.log(`Error in the deletePost controller : ${error.message}`)
+        console.error(`Error in the deletePost controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
         
     }
@@ -87,7 +87,7 @@ export const commentOnPost = async(req, res)=>{
 
         return res.status(200).json({message:"comment added successfully"})
     } catch (error) {
-        console.log(`Error in the commentOnPost controller : ${error.message}`)
+        console.error(`Error in the commentOnPost controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
         
     }
@@ -109,7 +109,7 @@ export const likeUnlikePost = async(req, res)=>{
             post.likes = post.likes.filter((id)=> id.toString() !== userId.toString())
             await post.save()
             await User.updateOne({_id: userId}, {$pull: {likedPosts: postId}})
-            return res.status(200).json({message:"post unliked successfully"})
+            return res.status(200).json({message:"post unliked successfully", likes: post.likes})
         }else{
             //like the post
             post.likes.push(userId)
@@ -123,12 +123,12 @@ export const likeUnlikePost = async(req, res)=>{
                 
             })
             await notification.save()
-            return res.status(200).json({message:"post liked successfully"})
+            return res.status(200).json({message:"post liked successfully" , likes: post.likes})
         }
 
 
     } catch (error) {
-        console.log(`Error in the likeUnlikePost controller : ${error.message}`)
+        console.error(`Error in the likeUnlikePost controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
     }
 }
@@ -149,7 +149,7 @@ export const getAllPosts = async(req, res)=>{
         return res.status(200).json({message: "posts fetched successfully", posts})
 
     } catch (error) {
-        console.log(`Error in the getAllPosts controller : ${error.message}`)
+        console.error(`Error in the getAllPosts controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
         
     }
@@ -159,7 +159,7 @@ export const getLikedPosts = async(req, res)=>{
     const userId = req.params.id;
     try {
         const user = await User.findById(userId)
-        const likedPosts = await Post.find({_id:{$in : user.likedPosts}}).populate({
+        const likedPosts = await Post.find({_id:{$in : user.likedPosts}}).sort({createdAt: -1}).populate({
             path: "user",
             select: "-password -email -createdAt -updatedAt -__v"
         }).populate({
@@ -168,7 +168,7 @@ export const getLikedPosts = async(req, res)=>{
         })
         return res.status(200).json({message: "liked posts fetched successfully", posts: likedPosts})
     } catch (error) {
-        console.log(`Error in the getLikedPosts controller : ${error.message}`)
+        console.error(`Error in the getLikedPosts controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
     }
 }
@@ -186,7 +186,7 @@ export const getFollowingPosts = async(req, res)=>{
         })
         return res.status(200).json({message: "following posts fetched successfully", posts: followingPosts})
     } catch (error) {
-        console.log(`Error in the getFollowingPosts controller : ${error.message}`)
+        console.error(`Error in the getFollowingPosts controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
     }
 }
@@ -204,7 +204,7 @@ export const getUserPosts = async(req, res)=>{
         })
         return res.status(200).json({message: "user posts fetched successfully", posts: userPosts})
     } catch (error) {
-        console.log(`Error in the getUserPosts controller : ${error.message}`)
+        console.error(`Error in the getUserPosts controller : ${error.message}`)
         return res.status(500).json({message:"internal server error"})
     }
 }
