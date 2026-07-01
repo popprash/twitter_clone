@@ -69,9 +69,9 @@ const ProfilePage = () => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	refetch();
-	// }, [username,  refetch]);
+	useEffect(() => {
+		refetch();
+	}, [username,  refetch]);
 
 	return (
 		<>
@@ -87,7 +87,7 @@ const ProfilePage = () => {
 									<FaArrowLeft className='w-4 h-4' />
 								</Link>
 								<div className='flex flex-col'>
-									<p className='font-bold text-lg'>{authUser?.fullname}</p>
+									<p className='font-bold text-lg'>{user?.fullname}</p>
 									<span className='text-sm text-slate-500'>{POSTS?.length} posts</span>
 								</div>
 							</div>
@@ -164,9 +164,9 @@ const ProfilePage = () => {
 
 							<div className='flex flex-col gap-4 mt-14 px-4'>
 								<div className='flex flex-col'>
-									<span className='font-bold text-lg'>{authUser?.fullname}</span>
-									<span className='text-sm text-slate-500'>@{authUser?.username}</span>
-									<span className='text-sm my-1'>{authUser?.bio}</span>
+									<span className='font-bold text-lg'>{user?.fullname}</span>
+									<span className='text-sm text-slate-500'>@{user?.username}</span>
+									<span className='text-sm my-1'>{user?.bio}</span>
 								</div>
 
 								<div className='flex gap-2 flex-wrap'>
@@ -175,13 +175,12 @@ const ProfilePage = () => {
 											<>
 												<FaLink className='w-3 h-3 text-slate-500' />
 												<a
-													href='https://youtube.com/@asaprogrammer_'
+													href={`https://youtube.com/@${user?.username}`}
 													target='_blank'
 													rel='noreferrer'
 													className='text-sm text-blue-500 hover:underline'
 												>
-													{/* Updated this after recording the video. I forgot to update this while recording, sorry, thx. */}
-													{authUser?.link}
+													{user?.link}
 												</a>
 											</>
 										</div>
