@@ -36,7 +36,7 @@ const ProfilePage = () => {
 		refetch,
 		isRefetching,
 	} = useQuery({
-		queryKey: ["userProfile"],
+		queryKey: ["userProfile", username],
 		queryFn: async () => {
 			try {
 				const res = await fetch(`/api/users/profile/${username}`);
@@ -59,7 +59,7 @@ const ProfilePage = () => {
 
 	const handleImgChange = (e, state) => {
 		const file = e.target.files[0];
-		if (file) {
+		if (file) {	
 			const reader = new FileReader();
 			reader.onload = () => {
 				state === "coverImg" && setCoverImg(reader.result);
@@ -69,9 +69,9 @@ const ProfilePage = () => {
 		}
 	};
 
-	useEffect(() => {
-		refetch();
-	}, [username,  refetch]);
+	// useEffect(() => {
+	// 	refetch();
+	// }, [username,  refetch]);
 
 	return (
 		<>
@@ -87,14 +87,14 @@ const ProfilePage = () => {
 									<FaArrowLeft className='w-4 h-4' />
 								</Link>
 								<div className='flex flex-col'>
-									<p className='font-bold text-lg'>{user?.fullname}</p>
+									<p className='font-bold text-lg'>{authUser?.fullname}</p>
 									<span className='text-sm text-slate-500'>{POSTS?.length} posts</span>
 								</div>
 							</div>
 							{/* COVER IMG */}
 							<div className='relative group/cover'>
 								<img
-									src={coverImg || user?.coverImg || "/cover.png"}
+									src={coverImg || authUser?.coverImg || "/cover.png"}
 									className='h-52 w-full object-cover'
 									alt='cover image'
 								/>
@@ -164,13 +164,13 @@ const ProfilePage = () => {
 
 							<div className='flex flex-col gap-4 mt-14 px-4'>
 								<div className='flex flex-col'>
-									<span className='font-bold text-lg'>{user?.fullname}</span>
-									<span className='text-sm text-slate-500'>@{user?.username}</span>
-									<span className='text-sm my-1'>{user?.bio}</span>
+									<span className='font-bold text-lg'>{authUser?.fullname}</span>
+									<span className='text-sm text-slate-500'>@{authUser?.username}</span>
+									<span className='text-sm my-1'>{authUser?.bio}</span>
 								</div>
 
 								<div className='flex gap-2 flex-wrap'>
-									{user?.link && (
+									{authUser?.link && (
 										<div className='flex gap-1 items-center '>
 											<>
 												<FaLink className='w-3 h-3 text-slate-500' />
@@ -181,7 +181,7 @@ const ProfilePage = () => {
 													className='text-sm text-blue-500 hover:underline'
 												>
 													{/* Updated this after recording the video. I forgot to update this while recording, sorry, thx. */}
-													{user?.link}
+													{authUser?.link}
 												</a>
 											</>
 										</div>
