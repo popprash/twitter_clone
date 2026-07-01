@@ -1,10 +1,10 @@
-import toast from "react-hot-toast";
-import {useMutation , useQuery, useQueryClient} from "@tanstack/react-query";   
- 
-const useFollow = () => {
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "../components/common/ToastProvider";
 
-    const queryClient = useQueryClient();
-  const { mutate: follow,isPending} = useMutation({
+const useFollow = () => {
+  const toast = useToast();
+  const queryClient = useQueryClient();
+  const { mutate: follow, isPending } = useMutation({
     mutationFn: async (userId) => {
       try {
         const res = await fetch(`/api/users/follow/${userId}`, {

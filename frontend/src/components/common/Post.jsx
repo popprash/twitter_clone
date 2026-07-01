@@ -6,7 +6,7 @@ import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
+import { useToast } from "../common/ToastProvider";
 
 import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
@@ -15,6 +15,7 @@ const Post = ({ post }) => {
   const [comment, setComment] = useState("");
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const queryClient = useQueryClient();
+  const toast = useToast();
   const postOwner = post.user;
   const isLiked = post.likes.includes(authUser._id);
 
@@ -129,7 +130,7 @@ const Post = ({ post }) => {
 
   return (
     <>
-      <div className="flex gap-2 items-start p-4 border-b border-gray-700">
+      <div className="flex flex-col gap-4 p-4 border-b border-gray-700 sm:flex-row sm:items-start">
         <div className="avatar">
           <Link
             to={`/profile/${postOwner.username}`}
@@ -173,8 +174,8 @@ const Post = ({ post }) => {
               />
             )}
           </div>
-          <div className="flex justify-between mt-3">
-            <div className="flex gap-4 items-center w-2/3 justify-between">
+          <div className="flex flex-col gap-3 mt-3 sm:flex-row sm:justify-between sm:items-center">
+            <div className="flex flex-wrap gap-3 items-center w-full sm:w-2/3 justify-start sm:justify-between">
               <div
                 className="flex gap-1 items-center cursor-pointer group"
                 onClick={() =>

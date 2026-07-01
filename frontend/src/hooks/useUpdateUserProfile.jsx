@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useToast } from "../components/common/ToastProvider";
 
 const useUpdateUserProfile = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { mutateAsync: updateProfile, isPending: isUpdatingProfile } =
     useMutation({
@@ -26,14 +27,26 @@ const useUpdateUserProfile = () => {
         }
       },
       onSuccess: (updatedUser) => {
-		
+        const previousAuthUser = queryClient.getQueryData(["authUser"]);
+
         queryClient.setQueryData(["authUser"], updatedUser);
-		
-        queryClient.setQueryData(
-			["userProfile" , updatedUser.username],
-			updatedUser,
-        );
-		toast.success("Profile updated successfully");
+        queryClient.setQueryData(["userProfile", updatedUser.username], updatedUser);
+
+        if (
+          previousAuthUser?.username &&
+          previousAuthUser.username !== updatedUser.username
+        ) {
+          queryClient.setQueryData(
+            ["userProfile", previousAuthUser.username],
+            updatedUser,
+          );
+        }
+
+        queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+        toast.success("Profile updated successfully");
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     });
 

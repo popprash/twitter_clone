@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useToast } from "../../../components/common/ToastProvider";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -18,9 +18,15 @@ const SignUpPage = () => {
     password: "",
   });
 
+  const toast = useToast();
   const queryClient = useQueryClient();
 
-  const { mutate, isError, isPending, error } = useMutation({
+  const {
+    mutate,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
     mutationFn: async ({ email, username, fullname, password }) => {
       try {
         const res = await fetch("/api/auth/signup", {
@@ -34,7 +40,6 @@ const SignUpPage = () => {
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message || "Failed to create account");
-        console.log(data);
         return data;
       } catch (error) {
         console.error(error);
@@ -43,10 +48,6 @@ const SignUpPage = () => {
     },
     onSuccess: () => {
       toast.success("Account created successfully");
-
-      {
-        /* Added this line below, after recording the video. I forgot to add this while recording, sorry, thx. */
-      }
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
@@ -61,11 +62,11 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto flex h-screen px-10">
+    <div className="max-w-7xl mx-auto flex min-h-screen flex-col lg:flex-row px-4 sm:px-6">
       <div className="flex-1 hidden lg:flex items-center  justify-center">
         <XSvg className="lg:w-2/3 fill-white" />
       </div>
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="flex-1 flex flex-col justify-center items-center py-10">
         <form
           className="lg:w-2/3  mx-auto md:mx-20 flex gap-4 flex-col"
           onSubmit={handleSubmit}

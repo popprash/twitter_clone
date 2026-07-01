@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
+import { useToast } from "../../components/common/ToastProvider";
 
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 
@@ -9,6 +9,7 @@ import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 
 const NotificationPage = () => {
+	const toast = useToast();
 	const queryClient = useQueryClient();
 	const { data: notifications, isLoading } = useQuery({
 		queryKey: ["notifications"],
@@ -49,7 +50,8 @@ const NotificationPage = () => {
 
 	return (
 		<>
-			<div className='flex-[4_4_0] border-l border-r border-gray-700 min-h-screen'>
+			<div className='flex-1 border-t border-gray-700 min-h-screen lg:border-t-0 lg:border-l lg:border-r px-3 sm:px-4'>
+				<div className='max-w-4xl mx-auto'>
 				<div className='flex justify-between items-center p-4 border-b border-gray-700'>
 					<p className='font-bold'>Notifications</p>
 					<div className='dropdown '>
@@ -92,7 +94,8 @@ const NotificationPage = () => {
 					</div>
 				))}
 			</div>
-		</>
+		</div>
+	</>
 	);
 };
 export default NotificationPage;

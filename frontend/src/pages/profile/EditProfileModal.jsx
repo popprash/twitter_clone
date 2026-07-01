@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
 const EditProfileModal = ({ authUser }) => {
@@ -12,6 +13,7 @@ const EditProfileModal = ({ authUser }) => {
     currentPassword: "",
   });
 
+  const navigate = useNavigate();
   const { updateProfile, isUpdatingProfile } = useUpdateUserProfile();
 
   const handleInputChange = (e) => {
@@ -50,8 +52,10 @@ const EditProfileModal = ({ authUser }) => {
             onSubmit={async (e) => {
               e.preventDefault();
 
-              await updateProfile(formData);
-
+              const updatedUser = await updateProfile(formData);
+              if (updatedUser?.username && updatedUser.username !== authUser.username) {
+                navigate(`/profile/${updatedUser.username}`);
+              }
               document.getElementById("edit_profile_modal").close();
             }}
           >

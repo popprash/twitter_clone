@@ -7,13 +7,14 @@ import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useToast } from "../../../components/common/ToastProvider";
 
 const LoginPage = () => {
 	const [formData, setFormData] = useState({
 		username: "",
 		password: "",
 	});
+	const toast = useToast();
 	const queryClient = useQueryClient();
 
 	const {
@@ -59,11 +60,11 @@ const LoginPage = () => {
 	};
 
 	return (
-		<div className='max-w-7xl mx-auto flex h-screen'>
+		<div className='max-w-7xl mx-auto flex min-h-screen flex-col lg:flex-row px-4 sm:px-6'>
 			<div className='flex-1 hidden lg:flex items-center  justify-center'>
 				<XSvg className='lg:w-2/3 fill-white' />
 			</div>
-			<div className='flex-1 flex flex-col justify-center items-center'>
+			<div className='flex-1 flex flex-col justify-center items-center py-10'>
 				<form className='flex gap-4 flex-col' onSubmit={handleSubmit}>
 					<XSvg className='w-24 lg:hidden fill-white' />
 					<h1 className='text-4xl font-extrabold text-white'>{"Let's"} go.</h1>

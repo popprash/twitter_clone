@@ -6,9 +6,10 @@ import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useToast } from "../common/ToastProvider";
 
 const Sidebar = () => {
+	const toast = useToast();
 	const queryClient = useQueryClient();
 	const { mutate: logout } = useMutation({
 		mutationFn: async () => {
@@ -37,8 +38,8 @@ const Sidebar = () => {
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
 	return (
-		<div className='md:flex-[2_2_0] w-18 max-w-52'>
-			<div className='sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full'>
+		<div className='w-full md:flex-[2_2_0] md:max-w-56 lg:max-w-64'>
+			<div className='sticky top-0 left-0 h-auto md:h-screen flex flex-col border-b border-gray-700 md:border-b-0 md:border-r w-full px-2 py-3 md:px-4 md:py-4'>
 				<Link to='/' className='flex justify-center md:justify-start'>
 					<XSvg className='px-2 w-12 h-12 rounded-full fill-white hover:bg-stone-900' />
 				</Link>
